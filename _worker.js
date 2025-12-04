@@ -42,19 +42,7 @@ const DEFAULT_CUSTOM_IPS = `173.245.58.127#CF官方优选
 173.245.58.201#CF官方优选
 172.67.71.105#CF官方优选
 162.159.37.12#CF官方优选
-192.131.142.161#HK,LEASEWEB HONG KONG LIMITED
-43.132.244.52#HK6 COLLYER QUAY
-103.247.28.240#HK,VMISS Inc.
-118.141.64.192#HK,HGC Global Communications Limited
-124.244.92.109#HK,Hong Kong Broadband Network Ltd
-141.11.175.133#HK,AKILE LTD
-141.11.77.248#HK,AKILE LTD
-141.11.218.249#HK,AKILE LTD
-141.11.148.60#HK,AKILE LTD
-141.11.78.77#HK,AKILE LTD
-141.11.91.67#HK,HYTRON NETWORK HK
-154.16.10.34#HK,Digital Energy Technologies Limited
-156.254.114.120#HK,StepGo Limited
+129.153.74.179#HK,StepGo Limited
 104.18.33.144#CF官方优选`;
 // =============================================================================
 
