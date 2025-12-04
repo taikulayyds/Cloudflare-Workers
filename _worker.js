@@ -23,7 +23,7 @@ const TG_CHANNEL_URL = "https://t.me/cloudflareorg";
 const PROXY_CHECK_URL = "https://kaic.hidns.co/"; 
 
 // 4. 订阅转换配置
-const DEFAULT_CONVERTER = "https://sub.cmliussss.net";   //支持自定义修改subapi
+const DEFAULT_CONVERTER = "https://url.v1.mk";   //支持自定义修改subapi
 const DEFAULT_CONFIG = "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_Full_MultiMode.ini";  //支持自定义修改订阅转换配置链接
 
 // 5. 自定义优选IP (仅用于本地备用) //修改自定义优选IP在这里修改
