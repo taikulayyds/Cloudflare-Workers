@@ -42,45 +42,19 @@ const DEFAULT_CUSTOM_IPS = `173.245.58.127#CF官方优选
 173.245.58.201#CF官方优选
 172.67.71.105#CF官方优选
 162.159.37.12#CF官方优选
-192.131.142.161,46639,HK,LEASEWEB HONG KONG LIMITED
-43.132.244.52,21415,HK,6 COLLYER QUAY
-103.247.28.240,37211,HK,VMISS Inc.
-118.141.64.192,36619,HK,HGC Global Communications Limited
-124.244.92.109,25203,HK,Hong Kong Broadband Network Ltd
-141.11.175.133,8080,HK,AKILE LTD
-141.11.77.248,8080,HK,AKILE LTD
-141.11.218.249,8080,HK,AKILE LTD
-141.11.148.60,8080,HK,AKILE LTD
-141.11.78.77,8080,HK,AKILE LTD
-141.11.91.67,8080,HK,HYTRON NETWORK HK
-154.16.10.34,8080,HK,Digital Energy Technologies Limited
-156.254.114.120,30011,HK,StepGo Limited
-156.255.90.175,8443,HK,StepGo Limited
-156.255.90.175,2053,HK,StepGo Limited
-192.252.182.52,7602,HK,Integen, Inc
-2.56.91.89,2053,HK,ihc.hk vps in Hong Kong
-2.56.91.89,8443,HK,ihc.hk vps in Hong Kong
-210.6.207.42,18622,HK,Hong Kong Broadband Network Ltd
-221.125.10.8,57537,HK,HGC Global Communications Limited
-36.50.90.241,35951,HK,IoT Innovation Technologies Company Limited
-36.50.90.241,47790,HK,IoT Innovation Technologies Company Limited
-38.6.219.16,8080,HK,PEG TECH INC
-43.154.124.136,26666,HK,6 COLLYER QUAY
-45.149.186.112,8080,HK,AKILE LTD
-45.39.198.40,8080,HK,Internet Utilities NA LLC
-43.252.41.204,2443,HK,CommuniLink Internet Ltd.
-45.39.198.43,8080,HK,Internet Utilities NA LLC
-46.232.122.240,8000,HK,Dom Tehniki Ltd
-47.242.171.138,37021,HK,ALIBABA CLOUD - HK
-47.57.13.107,443,HK,Alibaba Cloud (Singapore) Private Limited
-47.76.218.163,443,HK,Alibaba Cloud - HK
-58.176.95.46,443,HK,Hong Kong Broadband Network Ltd
-62.192.175.43,12009,HK,Private Customer
-8.218.245.116,42805,HK,Alibaba Cloud (Singapore) Private Limited
-8.218.245.116,49701,HK,Alibaba Cloud (Singapore) Private Limited
-8.218.245.116,41528,HK,Alibaba Cloud (Singapore) Private Limited
-85.208.104.34,8080,HK,Internet Utilities Europe and Asia Limited
-83.147.3.165,8080,HK,AKILE LTD
+192.131.142.161#HK,LEASEWEB HONG KONG LIMITED
+43.132.244.52#HK6 COLLYER QUAY
+103.247.28.240#HK,VMISS Inc.
+118.141.64.192#HK,HGC Global Communications Limited
+124.244.92.109#HK,Hong Kong Broadband Network Ltd
+141.11.175.133#HK,AKILE LTD
+141.11.77.248#HK,AKILE LTD
+141.11.218.249#HK,AKILE LTD
+141.11.148.60#HK,AKILE LTD
+141.11.78.77#HK,AKILE LTD
+141.11.91.67#HK,HYTRON NETWORK HK
+154.16.10.34#HK,Digital Energy Technologies Limited
+156.254.114.120#HK,StepGo Limited
 104.18.33.144#CF官方优选`;
 // =============================================================================
 
