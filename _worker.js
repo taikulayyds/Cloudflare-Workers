@@ -13,10 +13,10 @@ const SUB_PASSWORD = "";   //修改你的订阅链接密码
 
 // 3. 默认基础配置
 // 🔴 默认 ProxyIP (代码修改此处生效，客户端修改 path 生效)
-const DEFAULT_PROXY_IP = "ProxyIP.Oracle.cmliussss.net"; 
+const DEFAULT_PROXY_IP = "tw.sni2025.netlib.re"; 
 
 // 🔴 真实订阅源 (写死读取)
-const DEFAULT_SUB_DOMAIN = "sub.cmliussss.net";  //支持自定义修改源
+const DEFAULT_SUB_DOMAIN = "sub.cmliussss.net";  //支持自定义修改源，即订阅器SUB
 
 const TG_GROUP_URL = "https://t.me/zyssadmin";   
 const TG_CHANNEL_URL = "https://t.me/cloudflareorg"; 
@@ -28,6 +28,11 @@ const DEFAULT_CONFIG = "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Cla
 
 // 5. 自定义优选IP (仅用于本地备用)
 const DEFAULT_CUSTOM_IPS = `173.245.58.127#CF官方优选
+43.247.133.134#HK1
+149.104.28.43#HK2
+83.229.122.186#HK3
+149.104.31.235#HK4
+47.240.173.102#HK5
 8.39.125.176#CF官方优选
 172.64.228.106#CF官方优选
 198.41.223.138#CF官方优选
@@ -42,11 +47,6 @@ const DEFAULT_CUSTOM_IPS = `173.245.58.127#CF官方优选
 173.245.58.201#CF官方优选
 172.67.71.105#CF官方优选
 162.159.37.12#CF官方优选
-43.247.133.134#HK1
-149.104.28.43#HK2
-83.229.122.186#HK3
-149.104.31.235#HK4
-47.240.173.102#HK5
 104.18.33.144#CF官方优选`;
 // =============================================================================
 
@@ -62,16 +62,92 @@ const extractAddr = b => {
   } return { host: h, port: p, payload: b.slice(o2 + l) };
 };
 
-const parseAddressPort = (addressSegment) => {
-  let address, port;
-  if (addressSegment.startsWith('[')) {
-    const [ipv6Address, portStr = 443] = addressSegment.slice(1, -1).split(']:');
-    address = `[${ipv6Address}]`; port = portStr;
-  } else { 
-    [address, port = 443] = addressSegment.split(':'); 
-  } 
-  return [address, port];
+// ====================================================================
+// === 新增/修改的异步解析逻辑 (基于 .netlib) ===
+// ====================================================================
+
+/**
+ * 异步函数：通过 DNS over HTTPS 查询域名的 TXT 记录，并从中随机选择一个 IP:端口 地址。
+ */
+async function resolveNetlibDomainAsync(netlib) {
+    try {
+        const response = await fetch(`https://1.1.1.1/dns-query?name=${netlib}&type=TXT`, {
+            headers: { 'Accept': 'application/dns-json' }
+        });
+        
+        if (!response.ok) return null;
+        
+        const data = await response.json();
+        const txtRecords = (data.Answer || [])
+            .filter(record => record.type === 16)
+            .map(record => record.data);
+            
+        if (txtRecords.length === 0) return null;
+        
+        let txtData = txtRecords[0];
+        if (txtData.startsWith('"') && txtData.endsWith('"')) {
+            txtData = txtData.slice(1, -1);
+        }
+        
+        const prefixes = txtData
+            .replace(/\\010/g, ',')
+            .replace(/\n/g, ',')
+            .split(',')
+            .map(s => s.trim())
+            .filter(Boolean);
+            
+        if (prefixes.length === 0) return null;
+        
+        return prefixes[Math.floor(Math.random() * prefixes.length)];
+        
+    } catch (error) {
+        // console.error('解析Netlib域名失败:', error); 
+        return null;
+    }
 }
+
+/**
+ * 主解析函数：处理 .netlib 的异步逻辑和其他同步逻辑。
+ * (替代了原有的同步 parseAddressPort)
+ */
+async function 解析地址端口(proxyIP) {
+    proxyIP = proxyIP.toLowerCase();
+
+    // --- 1. 处理 .netlib 域名解析（异步部分） ---
+    if (proxyIP.includes('.netlib')) { 
+        const netlibResult = await resolveNetlibDomainAsync(proxyIP);
+        proxyIP = netlibResult || proxyIP;
+    }
+
+    let 地址 = proxyIP, 端口 = 443; // 默认端口 443
+
+    // --- 2. 处理 .tpXX 端口分离 ---
+    if (proxyIP.includes('.tp')) {
+        const tpMatch = proxyIP.match(/\.tp(\d+)/);
+        if (tpMatch) {
+            端口 = parseInt(tpMatch[1], 10);
+        }
+        return [地址, 端口];
+    }
+    
+    // --- 3. 处理 IPV6/IPV4/域名:端口 分离 (同步部分) ---
+    if (proxyIP.includes(']:')) {
+        // IPV6 [::]:port
+        const parts = proxyIP.split(']:');
+        地址 = parts[0] + ']';
+        端口 = parseInt(parts[1], 10) || 端口;
+    } 
+    else if (proxyIP.includes(':') && !proxyIP.startsWith('[')) {
+        // IPV4/域名:port
+        const colonIndex = proxyIP.lastIndexOf(':');
+        地址 = proxyIP.slice(0, colonIndex);
+        端口 = parseInt(proxyIP.slice(colonIndex + 1), 10) || 端口;
+    }
+    
+    return [地址, 端口];
+}
+
+// 原始的 parseAddressPort 函数已被删除/替换，不再使用。
 
 class Pool {
   constructor() { this.buf = new ArrayBuffer(16384); this.ptr = 0; this.pool = []; this.max = 8; this.large = false; }
@@ -225,9 +301,12 @@ export default {
     if (url.pathname.includes('/proxyip=')) {
       try {
         const proxyParam = url.pathname.split('/proxyip=')[1].split('/')[0];
-        const [address, port] = parseAddressPort(proxyParam); 
+        // *** 修改点：使用 await 调用新的异步解析函数 ***
+        const [address, port] = await 解析地址端口(proxyParam); 
         proxyIPConfig = { address, port: +port }; 
-      } catch (e) {}
+      } catch (e) {
+         console.error('Failed to parse proxyip in fetch:', e.message);
+      }
     }
     const { 0: c, 1: s } = new WebSocketPair(); s.accept(); 
     handle(s, proxyIPConfig); 
@@ -363,6 +442,7 @@ const handle = (ws, proxyIPConfig) => {
     try {
       if (first) {
         first = false; const b = new Uint8Array(e.data);
+        // 🚨 注意：这里使用旧版静态 UUID 检查，因为 `stallTCP1.3后台版V1.js` 中没有 DynamicUUID 类的定义。
         if (buildUUID(b, 1).toLowerCase() !== UUID.toLowerCase()) throw new Error('Auth failed.');
         ws.send(new Uint8Array([0, 0])); 
         const { host, port, payload } = extractAddr(b); 
