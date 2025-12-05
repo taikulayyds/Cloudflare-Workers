@@ -16,7 +16,7 @@ const SUB_PASSWORD = "";   //修改你的订阅链接密码
 const DEFAULT_PROXY_IP = "ProxyIP.Oracle.cmliussss.net"; 
 
 // 🔴 真实订阅源 (写死读取)
-const DEFAULT_SUB_DOMAIN = "sub.cmliussss.net";  //支持自定义修改源，即订阅器SUB
+const DEFAULT_SUB_DOMAIN = "blogvl.soso.edu.kg";  //支持自定义修改源，即订阅器SUB
 
 const TG_GROUP_URL = "https://t.me/zyssadmin";   
 const TG_CHANNEL_URL = "https://t.me/cloudflareorg"; 
