@@ -13,7 +13,7 @@ const SUB_PASSWORD = "";   //修改你的订阅链接密码
 
 // 3. 默认基础配置
 // 🔴 默认 ProxyIP (代码修改此处生效，客户端修改 path 生效)
-const DEFAULT_PROXY_IP = "sjc.o00o.ooo"; 
+const DEFAULT_PROXY_IP = "ProxyIP.Oracle.cmliussss.net"; 
 
 // 🔴 真实订阅源 (写死读取)
 const DEFAULT_SUB_DOMAIN = "sub.cmliussss.net";  //支持自定义修改源
